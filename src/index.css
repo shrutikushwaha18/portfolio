@@ -1,0 +1,106 @@
+/* ✅ 1. GOOGLE FONTS — ALWAYS FIRST */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ✅ 2. TAILWIND IMPORT */
+@import "tailwindcss";
+
+/* ✅ 3. THEME (custom variables) */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Orbitron", sans-serif;
+  --font-tech: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-bg-deep: #020617;
+  --color-bg-mid: #03121d;
+  --color-bg-light: #041923;
+  --color-neon-teal: #00f5d4;
+  --color-cyan-glow: #00c2ff;
+  --color-text-primary: #e5f6ff;
+  --color-text-secondary: #7fa6b7;
+  --color-text-muted: #5a7684;
+}
+
+/* ✅ 4. BASE STYLES */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg-deep text-text-primary font-sans selection:bg-neon-teal/30 selection:text-neon-teal;
+    background: radial-gradient(circle at center, var(--color-bg-mid), var(--color-bg-deep));
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-wider;
+  }
+}
+
+/* ✅ 5. COMPONENTS */
+@layer components {
+  .glow-text {
+    text-shadow: 0 0 10px rgba(0, 245, 212, 0.5), 0 0 20px rgba(0, 245, 212, 0.3);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 15px rgba(0, 245, 212, 0.2);
+    border: 1px solid rgba(0, 245, 212, 0.3);
+  }
+
+  .glow-box {
+    box-shadow: 0 0 20px rgba(0, 245, 212, 0.15);
+  }
+
+  .neon-button {
+    @apply relative overflow-hidden px-8 py-3 font-display text-sm uppercase tracking-widest transition-all duration-300;
+    border: 1px solid var(--color-neon-teal);
+    color: var(--color-neon-teal);
+  }
+
+  .neon-button:hover {
+    @apply bg-neon-teal text-bg-deep;
+    box-shadow: 0 0 25px rgba(0, 245, 212, 0.6);
+  }
+
+  .section-title-layered {
+    @apply relative mb-16;
+  }
+
+  .section-title-layered .main {
+    @apply relative z-10 text-4xl md:text-5xl font-black uppercase text-neon-teal;
+    text-shadow: 0 0 10px rgba(0, 245, 212, 0.5), 0 0 20px rgba(0, 245, 212, 0.3);
+  }
+
+  .section-title-layered .bg {
+    @apply absolute -top-4 -left-2 z-0 text-6xl md:text-7xl font-black uppercase opacity-10 text-neon-teal select-none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ✅ 6. CUSTOM SCROLLBAR (NORMAL CSS LAST) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 245, 212, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 212, 0.4);
+}
