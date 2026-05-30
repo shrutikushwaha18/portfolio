@@ -285,7 +285,7 @@ export const About: React.FC = () => {
 <div className="w-full max-w-md mx-auto overflow-hidden rounded-2xl border-t-2 border-b-2 border-neon-teal">
          
        <img 
-                src="/public/portfolio.image.jpeg"
+                src="/portfolio.image.jpeg"
                 alt="Shruti Kushwaha"
                 className="w-full h-full object-cover"
               />
