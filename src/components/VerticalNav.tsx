@@ -52,8 +52,8 @@ export const VerticalNav: React.FC = () => {
       <div className="flex flex-col items-center gap-8 w-full">
         <div className="h-32 w-[1px] bg-white/10" />
         <div className="flex flex-col gap-8 text-text-primary/40">
-          <a href="https://www.linkedin.com/in/aadina-jain-9512a72a2/" target="_blank" rel="noopener noreferrer" className="hover:text-neon-teal transition-colors"><Linkedin size={16} /></a>
-          <a href="https://github.com/aadinajain18" target="_blank" rel="noopener noreferrer" className="hover:text-neon-teal transition-colors"><Github size={16} /></a>
+          <a href="https://www.linkedin.com/in/shrutikush06/" target="_blank" rel="noopener noreferrer" className="hover:text-neon-teal transition-colors"><Linkedin size={16} /></a>
+          <a href="https://github.com/shrutikushwaha18" target="_blank" rel="noopener noreferrer" className="hover:text-neon-teal transition-colors"><Github size={16} /></a>
         </div>
       </div>
     </nav>
