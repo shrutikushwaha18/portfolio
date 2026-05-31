@@ -282,7 +282,15 @@ export const About: React.FC = () => {
           <motion.div
             className="relative"
           >
-<div className="w-full max-w-md mx-auto overflow-hidden rounded-2xl border-t-2 border-b-2 border-neon-teal">
+<div className="relative w-full max-w-md mx-auto">
+  {/* Top Left Corner */}
+  <div className="absolute -top-6 -left-6 w-32 h-32 border-l-2 border-t-2 border-cyan-400"></div>
+
+  {/* Bottom Right Corner */}
+  <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-cyan-400"></div>
+
+  <div className="overflow-hidden rounded-3xl">
+
          
        <img 
                 src="/portfolio.image.jpeg"
@@ -290,6 +298,8 @@ export const About: React.FC = () => {
                 className="w-full h-full object-cover"
               />
             </div>
+          </div>
+
           </motion.div>
 
           {/* TEXT */}
