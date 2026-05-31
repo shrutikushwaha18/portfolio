@@ -2,271 +2,230 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
 
-export const About: React.FC = () => {
+const About: React.FC = () => {
 
   const generatePDF = () => {
-  const doc = new jsPDF();
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
 
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const margin = 15;
-  const contentWidth = pageWidth - margin * 2;
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 14;
+    const contentW = pageW - margin * 2;
+    const ACCENT = "#1F4E79";
+    const GRAY = "#555555";
 
-  let y = 15;
+    let y = 14;
 
-  // NAME
-  doc.setFont("times", "bold");
-  doc.setFontSize(24);
-  doc.text("SHRUTI KUSHWAHA", pageWidth / 2, y, { align: "center" });
-  y += 8;
+    const addPage = () => {
+      doc.addPage();
+      y = 14;
+    };
 
-  // CONTACT
-  doc.setFont("times", "normal");
-  doc.setFontSize(9);
+    const checkY = (needed: number) => {
+      if (y + needed > pageH - 10) addPage();
+    };
 
-  doc.text(
-    "6393108661 | shrutikushwaha740@gmail.com",
-    pageWidth / 2,
-    y,
-    { align: "center" }
-  );
-  y += 4;
+    const sectionHeader = (title: string) => {
+      checkY(10);
+      y += 4;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(ACCENT);
+      doc.text(title, margin, y);
+      y += 2;
+      doc.setDrawColor(ACCENT);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageW - margin, y);
+      y += 5;
+      doc.setTextColor("#000000");
+    };
 
-  doc.text(
-    "https://linkedin.com/in/shrutikush06 | https://github.com/shrutikushwaha18",
-    pageWidth / 2,
-    y,
-    { align: "center" }
-  );
-  y += 4;
+    const bulletLine = (text: string, indent = margin + 3) => {
+      const lines = doc.splitTextToSize(`\u2022  ${text}`, contentW - (indent - margin) - 2);
+      checkY(lines.length * 4.2);
+      doc.text(lines, indent, y);
+      y += lines.length * 4.2;
+    };
 
-  doc.text(
-    "Kanpur, Uttar Pradesh, India",
-    pageWidth / 2,
-    y,
-    { align: "center" }
-  );
-  y += 8;
+    const twoCol = (left: string, right: string) => {
+      doc.text(left, margin, y);
+      doc.text(right, pageW - margin, y, { align: "right" });
+    };
 
-  const addSectionHeader = (title: string) => {
-    doc.setFont("times", "bold");
-    doc.setFontSize(11);
-    doc.text(title, margin, y);
-
-    y += 1.5;
-    doc.setLineWidth(0.1);
-    doc.line(margin, y, pageWidth - margin, y);
-
-    y += 5;
-  };
-
-  // OBJECTIVE
-  addSectionHeader("CAREER OBJECTIVE");
-
-  doc.setFont("times", "normal");
-  doc.setFontSize(9);
-
-  const objective =
-    "Computer Science (AI) student with a strong foundation in Machine Learning, Computer Vision, and Full-Stack Development. Seeking an entry-level role to apply skills in Python, AI/ML, and Web Technologies while contributing to organizational growth.";
-
-  const objLines = doc.splitTextToSize(objective, contentWidth);
-  doc.text(objLines, margin, y);
-  y += objLines.length * 4 + 5;
-
-  // EDUCATION
-  addSectionHeader("EDUCATION");
-
-  const education = [
-    {
-      institute: "Pranveer Singh Institute of Technology",
-      duration: "2023 - Pursuing",
-      degree: "B.Tech in Computer Science (AI)",
-      location: "Kanpur",
-      detail: "Percentage: 70.96% (Till 5th Semester)",
-    },
-    {
-      institute: "Mount Carmel Intermediate College",
-      duration: "2023",
-      degree: "Intermediate (UP Board)",
-      location: "Kanpur",
-      detail: "Percentage: 65%",
-    },
-    {
-      institute: "Mount Carmel Intermediate College",
-      duration: "2021",
-      degree: "High School (UP Board)",
-      location: "Kanpur",
-      detail: "Percentage: 84%",
-    },
-  ];
-
-  education.forEach((edu) => {
-    doc.setFont("times", "bold");
-    doc.text(`• ${edu.institute}`, margin, y);
-    doc.text(edu.duration, pageWidth - margin, y, {
-      align: "right",
-    });
-
-    y += 4;
-
-    doc.setFont("times", "italic");
-    doc.text(edu.degree, margin + 3, y);
-
-    doc.setFont("times", "normal");
-    doc.text(edu.location, pageWidth - margin, y, {
-      align: "right",
-    });
-
-    y += 4;
-
-    doc.text(edu.detail, margin + 3, y);
-
+    // NAME
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.setTextColor(ACCENT);
+    doc.text("SHRUTI KUSHWAHA", pageW / 2, y, { align: "center" });
     y += 6;
-  });
 
-  // SKILLS
-  addSectionHeader("SKILLS");
-
-  const skills = [
-    { label: "Programming", value: "C++, Java, Python" },
-    {
-      label: "ML & AI",
-      value:
-        "Scikit-learn, TensorFlow, PyTorch, NumPy, Pandas, Matplotlib, OpenCV",
-    },
-    {
-      label: "Gen AI",
-      value: "LangChain, OpenAI API, RAG",
-    },
-    {
-      label: "Web Development",
-      value: "HTML, CSS3, JavaScript, React, Express.js (Basic)",
-    },
-    {
-      label: "Database",
-      value: "MySQL, MongoDB",
-    },
-    {
-      label: "Core CS",
-      value: "DSA, OOP, DBMS",
-    },
-    {
-      label: "Tools",
-      value: "Git, GitHub, VS Code, Postman, Flask, AWS",
-    },
-    {
-      label: "Soft Skills",
-      value: "Problem Solving, Analytical Thinking, Team Collaboration",
-    },
-  ];
-
-  skills.forEach((skill) => {
-    doc.setFont("times", "bold");
-    doc.text(`${skill.label}:`, margin, y);
-
-    doc.setFont("times", "normal");
-    doc.text(skill.value, margin + 40, y);
-
-    y += 5;
-  });
-
-  y += 2;
-
-  // PROJECTS
-  addSectionHeader("PROJECTS");
-
-  const projects = [
-    {
-      name: "SynapseChat – AI-Powered Smart Interaction Engine",
-      date: "Jan 2026 - Ongoing",
-      tech: "Node.js, Express.js, Socket.io, OpenAI API, LangChain",
-      bullets: [
-        "Built real-time chat functionality using Socket.io for instant communication.",
-        "Utilized LangChain for prompt management and workflow chaining.",
-        "Designed a responsive and user-friendly chat interface.",
-      ],
-    },
-    {
-      name: "Sentiment Analysis System",
-      date: "Aug 2025 - Dec 2025",
-      tech:
-        "Python, NumPy, Pandas, Scikit-learn, TensorFlow, PyTorch",
-      bullets: [
-        "Built a text classification model achieving 75% accuracy.",
-        "Applied NLP techniques including TF-IDF and tokenization.",
-        "Optimized large-scale data processing pipelines.",
-      ],
-    },
-    {
-      name: "Expense Tracker Application",
-      date: "Aug 2024 - Dec 2024",
-      tech: "HTML, CSS, JavaScript, ReactJS, REST APIs",
-      bullets: [
-        "Implemented real-time balance, income and expense tracking.",
-        "Enhanced UI responsiveness using React component architecture.",
-        "Successfully deployed and accessible through live hosting.",
-      ],
-    },
-  ];
-
-  projects.forEach((project) => {
-    doc.setFont("times", "bold");
-    doc.text(`• ${project.name}`, margin, y);
-
-    doc.text(project.date, pageWidth - margin, y, {
-      align: "right",
-    });
-
-    y += 4;
-
-    doc.setFont("times", "italic");
+    // CONTACT
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
-    doc.text(project.tech, margin + 3, y);
-
+    doc.setTextColor(GRAY);
+    doc.text("Kanpur, Uttar Pradesh  \u2022  6393108661  \u2022  shrutikushwaha740@gmail.com", pageW / 2, y, { align: "center" });
     y += 4;
+    doc.text("linkedin.com/in/shrutikush06  \u2022  github.com/shrutikushwaha18", pageW / 2, y, { align: "center" });
+    y += 2;
+    doc.setTextColor("#000000");
 
-    doc.setFont("times", "normal");
-    doc.setFontSize(9);
+    // PROFESSIONAL SUMMARY
+    sectionHeader("PROFESSIONAL SUMMARY");
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    const summary =
+      "Computer Science (AI) student with hands-on experience in Machine Learning, NLP, and Full-Stack Web Development. Proficient in Python, TensorFlow, and modern JS frameworks. Built real-time AI systems, NLP pipelines, and responsive web apps. Seeking an entry-level Software / ML Engineer role to deliver impactful, data-driven solutions.";
+    const sumLines = doc.splitTextToSize(summary, contentW);
+    doc.text(sumLines, margin, y);
+    y += sumLines.length * 4.2 + 2;
 
-    project.bullets.forEach((bullet) => {
-      const lines = doc.splitTextToSize(
-        `• ${bullet}`,
-        contentWidth - 6
-      );
+    // TECHNICAL SKILLS
+    sectionHeader("TECHNICAL SKILLS");
+    doc.setFontSize(8.5);
 
-      doc.text(lines, margin + 3, y);
+    const skills = [
+      { label: "Languages",     value: "Python, C++, Java, JavaScript" },
+      { label: "ML / AI",       value: "TensorFlow, PyTorch, Scikit-learn, NumPy, Pandas, Matplotlib, OpenCV" },
+      { label: "Generative AI", value: "LangChain, OpenAI API, RAG (Retrieval-Augmented Generation)" },
+      { label: "Web Dev",       value: "React.js, Node.js, Express.js, Socket.io, HTML5, CSS3, REST APIs" },
+      { label: "Databases",     value: "MySQL, MongoDB, AWS (basics)" },
+      { label: "Tools",         value: "Git, GitHub, VS Code, Postman, Flask" },
+      { label: "Core CS",       value: "Data Structures & Algorithms, OOP, DBMS" },
+    ];
 
-      y += lines.length * 4;
+    skills.forEach(({ label, value }) => {
+      checkY(5);
+      doc.setFont("helvetica", "bold");
+      doc.text(`${label}:`, margin, y);
+      doc.setFont("helvetica", "normal");
+      const labelW = doc.getTextWidth(`${label}:  `);
+      const valLines = doc.splitTextToSize(value, contentW - labelW);
+      doc.text(valLines[0], margin + labelW, y);
+      if (valLines.length > 1) {
+        y += 4;
+        doc.text(valLines.slice(1).join(" "), margin + labelW, y);
+      }
+      y += 4.5;
     });
 
-    y += 2;
-  });
+    // PROJECTS
+    sectionHeader("PROJECTS");
 
-  // CERTIFICATES
-  addSectionHeader("CERTIFICATES & ACHIEVEMENTS");
+    const projects = [
+      {
+        name: "SynapseChat – AI-Powered Smart Interaction Engine",
+        date: "Jan 2026 – Present",
+        tech: "Node.js · Express.js · Socket.io · OpenAI API · LangChain",
+        bullets: [
+          "Engineered a real-time chat platform using Socket.io, enabling low-latency bi-directional communication.",
+          "Integrated LangChain for structured prompt management, context chaining, and multi-turn conversation handling.",
+          "Designed a fully responsive chat UI focused on user experience and scalability.",
+        ],
+      },
+      {
+        name: "Sentiment Analysis System",
+        date: "Aug 2025 – Dec 2025",
+        tech: "Python · NumPy · Pandas · Scikit-learn · TensorFlow · PyTorch",
+        bullets: [
+          "Developed a multi-class text classification model achieving 75% accuracy on real-world review datasets.",
+          "Applied NLP preprocessing: TF-IDF vectorization, tokenization, and stop-word removal.",
+          "Built optimized data pipelines capable of handling large-scale text corpora efficiently.",
+        ],
+      },
+      {
+        name: "Expense Tracker Application",
+        date: "Aug 2024 – Dec 2024",
+        tech: "React.js · JavaScript · HTML5 · CSS3 · REST APIs",
+        bullets: [
+          "Built a full-featured finance tracker with real-time income, expense, and balance management.",
+          "Leveraged React component architecture for a dynamic, responsive, and accessible UI.",
+          "Deployed on live hosting, making it publicly accessible and production-ready.",
+        ],
+      },
+    ];
 
-  const certificates = [
-    "Fundamentals of Python - Infosys Springboard (Sep 2024)",
-    "Machine Learning - Coursera (Apr 2026)",
-    "Agentblazer Champion - Salesforce Trailhead (Mar 2026)",
-    "LeetCode - Active problem solver focused on optimized DSA solutions",
-  ];
+    projects.forEach((project) => {
+      checkY(20);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.5);
+      twoCol(project.name, project.date);
+      y += 4;
 
-  doc.setFont("times", "normal");
-  doc.setFontSize(9);
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(8);
+      doc.setTextColor(GRAY);
+      doc.text(project.tech, margin + 2, y);
+      y += 4;
+      doc.setTextColor("#000000");
 
-  certificates.forEach((item) => {
-    const lines = doc.splitTextToSize(
-      `• ${item}`,
-      contentWidth
-    );
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      project.bullets.forEach((b) => bulletLine(b, margin + 2));
+      y += 2;
+    });
 
-    doc.text(lines, margin, y);
+    // EDUCATION
+    sectionHeader("EDUCATION");
 
-    y += lines.length * 4 + 1;
-  });
+    const education = [
+      {
+        institute: "Pranveer Singh Institute of Technology",
+        duration: "2023 – 2027 (Pursuing)",
+        degree: "B.Tech in Computer Science (Artificial Intelligence)",
+        location: "Kanpur",
+        detail: "Percentage: 70.96% (Till 5th Semester)",
+      },
+      {
+        institute: "Mount Carmel Intermediate College",
+        duration: "2023",
+        degree: "Intermediate – Science (UP Board)",
+        location: "Kanpur",
+        detail: "Percentage: 65%",
+      },
+      {
+        institute: "Mount Carmel Intermediate College",
+        duration: "2021",
+        degree: "High School (UP Board)",
+        location: "Kanpur",
+        detail: "Percentage: 84%",
+      },
+    ];
 
-  doc.save("Shruti_Kushwaha_Resume.pdf");
-};
+    education.forEach((edu) => {
+      checkY(14);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.5);
+      twoCol(edu.institute, edu.duration);
+      y += 4;
+
+      doc.setFont("helvetica", "italic");
+      doc.setTextColor(GRAY);
+      twoCol(edu.degree, edu.location);
+      y += 4;
+
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor("#000000");
+      doc.text(edu.detail, margin + 2, y);
+      y += 6;
+    });
+
+    // CERTIFICATIONS
+    sectionHeader("CERTIFICATIONS & ACHIEVEMENTS");
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+
+    const certs = [
+      "Machine Learning – Coursera (Apr 2026)",
+      "Agentblazer Champion – Salesforce Trailhead (Mar 2026)",
+      "Fundamentals of Python – Infosys Springboard (Sep 2024)",
+      "LeetCode – Active problem solver with consistent focus on optimized DSA solutions",
+    ];
+
+    certs.forEach((c) => bulletLine(c));
+
+    doc.save("Resume.pdf");
+  };  // <-- generatePDF ends here
+
   return (
     <section id="about" className="py-24 px-6 md:px-24">
       <div className="container mx-auto">
@@ -279,42 +238,35 @@ export const About: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
           {/* IMAGE */}
-          <motion.div
-            className="relative"
-          >
-<div className="relative w-full max-w-md mx-auto">
-  {/* Top Left Corner */}
-  <div className="absolute -top-6 -left-6 w-32 h-32 border-l-2 border-t-2 border-cyan-400"></div>
-
-  {/* Bottom Right Corner */}
-  <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-cyan-400"></div>
-
-  <div className="overflow-hidden rounded-3xl">
-
-         
-       <img 
-                src="/portfolio.image.jpeg"
-                alt="Shruti Kushwaha"
-                className="w-full h-full object-cover"
-              />
+          <motion.div className="relative">
+            <div className="relative w-full max-w-md mx-auto">
+              <div className="absolute -top-6 -left-6 w-32 h-32 border-l-2 border-t-2 border-cyan-400"></div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-cyan-400"></div>
+              <div className="overflow-hidden rounded-3xl">
+                <img
+                  src="/portfolio.image.jpeg"
+                  alt="Shruti Kushwaha"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
-          </div>
-
           </motion.div>
 
           {/* TEXT */}
           <motion.div className="flex flex-col gap-6">
             <h3 className="text-3xl font-bold">
-              Hi, I’m <span className="text-neon-teal">Shruti Kushwaha</span>
+              Hi, I'm <span className="text-neon-teal">Shruti Kushwaha</span>
             </h3>
 
             <p>
-           I specialize in full stack web development and AI based applications.
-            I thrive on transforming ideas into functional and visually appealing websites.
-           </p>
+              I specialize in full stack web development and AI based applications.
+              I thrive on transforming ideas into functional and visually appealing websites.
+            </p>
 
             <p>
-              Throughout my studies, I have gained hands-on experience in various programming languages, including Python, Java, and C++. I have worked on several projects, which have honed my technical skills and strengthened my ability to collaborate within diverse teams.
+              Throughout my studies, I have gained hands-on experience in various programming languages,
+              including Python, Java, and C++. I have worked on several projects, which have honed my
+              technical skills and strengthened my ability to collaborate within diverse teams.
             </p>
 
             <p>
@@ -330,4 +282,6 @@ export const About: React.FC = () => {
       </div>
     </section>
   );
-};
+};  // <-- component ends here
+
+export { About };
